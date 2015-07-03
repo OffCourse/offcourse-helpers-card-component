@@ -1,0 +1,6 @@
+--recursive
+--require coffee-script
+--ui mocha-gwt
+--compilers coffee:coffee-script/register
+--compilers js:babel/register
+--watch-extensions coffee,jsx

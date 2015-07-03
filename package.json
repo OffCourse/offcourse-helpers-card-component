@@ -1,0 +1,52 @@
+{
+  "name": "offcourse-helpers-card-component",
+  "version": "0.0.1",
+  "description": "Helpers for the Offcourse Card Component",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "gulp build",
+    "release": "npm test && npm run lint && gulp build && npm publish",
+    "test": "NODE_ENV=test node_modules/.bin/mocha ./test/index.spec.coffee",
+    "test_watch": "NODE_ENV=test node_modules/.bin/mocha -w ./test/index.spec.coffee",
+    "lint": "gulp lint",
+    "lint_watch": "gulp lint_watch",
+    "dev": "webpack-dev-server --host 0.0.0.0 --hot --progress --colors --content-base example"
+  },
+  "author": "Jan Hein Hoogstad",
+  "license": "MIT",
+  "dependencies": {
+    "classnames": "^2.1.2",
+    "lodash": "^3.10.0",
+    "ramda": "^0.15.1",
+    "react": "^0.13.3"
+  },
+  "devDependencies": {
+    "autoprefixer-loader": "^1.2.0",
+    "babel": "^5.5.4",
+    "babel-core": "^5.5.6",
+    "babel-eslint": "^3.1.14",
+    "babel-loader": "^5.1.4",
+    "chai": "^3.0.0",
+    "css-loader": "^0.9.1",
+    "coffee-script": "^1.9.3",
+    "eslint": "^0.22.1",
+    "eslint-loader": "^0.12.0",
+    "eslint-plugin-react": "^2.5.0",
+    "gulp": "^3.9.0",
+    "gulp-babel": "^5.1.0",
+    "gulp-eslint": "^0.13.2",
+    "jsdom": "^5.4.3",
+    "mocha-gwt": "^0.1.13",
+    "mockery": "^1.4.0",
+    "node-libs-browser": "^0.5.2",
+    "node-static": "^0.7.6",
+    "offcourse-styles": "0.0.2",
+    "react-hot-loader": "^1.2.7",
+    "sinon": "^1.15.1",
+    "sinon-chai": "^2.8.0",
+    "style-loader": "^0.8.3",
+    "url-loader": "^0.5.5",
+    "webpack": "^1.9.10",
+    "webpack-dev-server": "^1.9.0"
+  }
+}
