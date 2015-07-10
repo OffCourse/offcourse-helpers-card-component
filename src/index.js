@@ -8,8 +8,8 @@ class CardHelpers {
 
   _partition(schema, model){
     const partitions = R.map((field) => {
-      const { title, data } = this.getSectionData(field, model);
-      return { title, data };
+      const { title, fields } = this.getSectionData(field, model);
+      return { title, fields };
     }, schema);
     return partitions;
   }
