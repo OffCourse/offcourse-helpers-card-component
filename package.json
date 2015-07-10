@@ -1,6 +1,6 @@
 {
   "name": "offcourse-helpers-card-component",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Helpers for the Offcourse Card Component",
   "main": "lib/index.js",
   "scripts": {
