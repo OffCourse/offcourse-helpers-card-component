@@ -8,8 +8,8 @@ class CardHelpers {
 
   _partition(schema, model){
     const partitions = R.map((field) => {
-      const { title, fields } = this.getSectionData(field, model);
-      return { title, fields };
+      const { type, fields } = this.getSectionData(field, model);
+      return { type, fields };
     }, schema);
     return partitions;
   }
@@ -20,13 +20,13 @@ class CardHelpers {
 
   getSectionData(schemaField, model){
     const isMany = _.isObject(schemaField);
-    const title = isMany ? R.keys(schemaField)[0] : schemaField;
-    const sectionFields = isMany && schemaField[title];
-    const fields = isMany ? this._getFields(title, model, sectionFields) : [[title, model[title]]];
-    return { title, fields };
+    const type = isMany ? R.keys(schemaField)[0] : schemaField;
+    const sectionFields = isMany && schemaField[type];
+    const fields = isMany ? this._getFields(type, model, sectionFields) : [[type, model[type]]];
+    return { type, fields };
   }
 
-  _getFields(sectionTitle, model, fields){
+  _getFields(sectionType, model, fields){
     return R.map((fieldName) => {
       return [fieldName, model[fieldName]];
     }, fields);
