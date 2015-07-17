@@ -5,20 +5,40 @@ describe "Card Helpers", ->
   Given ->
     @helper = new CardHelpers()
   When ->
-    @schema = ["bar", "baz", {foo: ["qux","flux"]}]
+    @schema = [
+      "bar",
+      "baz",
+      { meta: ["qux"] },
+      "plix"
+    ]
     @model =
       bar: "bar"
-      qux: "qux"
-    @partitions = @helper.partition(@schema, @model)
+      qux: "flux"
+      plix: "plox"
+    @components =
+      plix: "plax"
+
+    @partitions = @helper.partition(@schema, @model, @components)
   Then ->
     @type = "bar" 
-    @fields = [["bar", "bar"]]
-    expect(@partitions[0]).to.deep.equal({ @type, @fields })
-  Then ->
+    @data = "bar"
+    expect(@partitions[0]).to.deep.equal({ @type, @data })
+
+  And ->
     @type = "baz" 
-    @fields = [["baz", undefined]]
-    expect(@partitions[1]).to.deep.equal({ @type, @fields })
-  Then ->
-    @type = "foo" 
-    @fields = [["qux", "qux"], ["flux", undefined]]
-    expect(@partitions[2]).to.deep.equal({ @type, @fields })
+    @data = undefined 
+    expect(@partitions[1]).to.deep.equal({ @type, @data })
+
+  And ->
+    @type = "meta" 
+    @data = [
+      title: "qux"
+      value: "flux"
+    ]
+    expect(@partitions[2]).to.deep.equal({ @type, @data })
+
+  And ->
+    @type = "plix" 
+    @data = "plox"
+    @component = "plax"
+    expect(@partitions[3]).to.deep.equal({ @type, @data, @component })
