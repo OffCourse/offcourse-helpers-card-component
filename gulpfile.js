@@ -13,7 +13,7 @@ gulp.task('babel', function () {
     .pipe(eslint())
     .pipe(eslint.format())
     .pipe(eslint.failOnError())
-    .pipe(babel())
+    .pipe(babel({stage: 0}))
     .pipe(gulp.dest('lib'));
 });
 
