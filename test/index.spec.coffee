@@ -2,26 +2,61 @@ require './helpers'
 CardHelpers = require("../src/index.js")
 
 describe "Card Helpers", ->
-  Given ->
-    @helper = new CardHelpers()
-    @schema = [ "bar", "baz", { meta: ["qux"] }, "plix", "hix" ]
-    @model = { bar: "bar", qux: "flux", plix: "plox", hix: "hox" }
-    @components = { plix: "plax", hix: "plax" }
-    @handlers = { hix: "hax" }
-  When -> @partitions = @helper.partition(@schema, @model, @components, @handlers)
-  Then ->
-    props = { type: "bar", data: "bar", component: undefined, handlers: undefined }
-    expect(@partitions[0]).to.deep.equal(props)
-  And ->
-    props = { type: "baz", data: undefined, component: undefined, handlers: undefined }
-    expect(@partitions[1]).to.deep.equal(props)
-  And ->
-    data = [{type: "qux", data: "flux"}]
-    props = { type: "meta", data, component: undefined, handlers: undefined }
-    expect(@partitions[2]).to.deep.equal(props)
-  And ->
-    props = { type: "plix", data: "plox", component: "plax", handlers: undefined }
-    expect(@partitions[3]).to.deep.equal(props)
-  And ->
-    props = { type: "hix", data: "hox", component: "plax", handlers: "hax" }
-    expect(@partitions[4]).to.deep.equal(props)
+  Given -> @helper = new CardHelpers()
+
+  describe "simple mapping", ->
+    Given ->
+      @schema =
+        bar: {}
+        baz: {}
+      @model = { bar: "bar" }
+    When -> @partitions = @helper.partition(@schema, @model)
+    Then ->
+      props = { type: "bar", data: "bar", component: undefined, handlers: undefined }
+      expect(@partitions[0]).to.deep.equal(props)
+    Then ->
+      props = { type: "baz", data: undefined, component: undefined, handlers: undefined }
+      expect(@partitions[1]).to.deep.equal(props)
+
+  describe "multiple fields", ->
+    Given ->
+      @schema =
+        foo: { fields: ["bar", "flux"] }
+      @model = { bar: "bar" }
+    When -> @partitions = @helper.partition(@schema, @model)
+    And ->
+        data = [{type: "bar", data: "bar"}, {type: "flux", data: undefined}]
+        props = { type: "foo", data, component: undefined, handlers: undefined }
+        expect(@partitions[0]).to.deep.equal(props)
+
+  describe "aliased field", ->
+    Given ->
+      @schema =
+        foo: { fields: "bar", component: "FOO" }
+      @model = { bar: "bar" }
+    When -> @partitions = @helper.partition(@schema, @model)
+    And ->
+      props = { type: "foo", data: "bar", component: "FOO", handlers: undefined }
+      expect(@partitions[0]).to.deep.equal(props)
+
+  describe "with component", ->
+    Given ->
+      @schema =
+        foo: { fields: { bar: "blah" } }
+      @model = { bar: "bar" }
+    When -> @partitions = @helper.partition(@schema, @model)
+    And ->
+      data = { blah: "bar" };
+      props = { type: "foo", data, component: undefined, handlers: undefined }
+      expect(@partitions[0]).to.deep.equal(props)
+
+  describe "with component and handlers", ->
+    Given ->
+      @schema =
+        foo: { fields: { hix: "blah", qux: "" }, component: "FOO", handlers: "QUX" }
+      @model = { bar: "bar", qux: "flux", foobar: "plox", hix: "bar" }
+    When -> @partitions = @helper.partition(@schema, @model)
+    And ->
+      data = { blah: "bar", qux: "flux" };
+      props = { type: "foo", data, component: "FOO", handlers: "QUX" }
+      expect(@partitions[0]).to.deep.equal(props)
