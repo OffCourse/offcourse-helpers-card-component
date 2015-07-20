@@ -6,15 +6,11 @@ class CardHelpers {
   }
 
   _partition(schema, model){
-    return R.map((key) => this._getSectionData(key, schema, model), R.keys(schema));
-  }
+    return R.map(({ type, fields, component, handlers }) => {
+      const data = this._getData(fields, type, model);
+      return { type, data, component, handlers };
+    }, schema);
 
- _getSectionData(key, schema, model){
-   const type = key;
-   const { component, handlers } = schema[key];
-   const fields = schema[key].fields;
-   const data = this._getData(fields, key, model); 
-   return { type, data, component, handlers };
  }
 
  _getData(fields, key, model){
@@ -26,7 +22,7 @@ class CardHelpers {
    if(R.is(String, fields)){
      return model[fields];
    }
-   
+
    if(R.is(Array, fields)){
      return R.map((type) => {
        return { type, data: model[type] };
@@ -35,8 +31,8 @@ class CardHelpers {
 
    if(R.is(Object, fields)){
      return R.reduce((acc, field)=> {
-       const key = fields[field] || field;
-       acc[key] = model[field]
+       const keyName = fields[field] || field;
+       acc[keyName] = model[field];
        return acc;
      }, {}, R.keys(fields));
    }

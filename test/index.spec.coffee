@@ -6,9 +6,11 @@ describe "Card Helpers", ->
 
   describe "simple mapping", ->
     Given ->
-      @schema =
-        bar: {}
-        baz: {}
+      @schema = [
+        type: "bar"
+      ,
+        type: "baz"
+      ]
       @model = { bar: "bar" }
     When -> @partitions = @helper.partition(@schema, @model)
     Then ->
@@ -20,8 +22,7 @@ describe "Card Helpers", ->
 
   describe "multiple fields", ->
     Given ->
-      @schema =
-        foo: { fields: ["bar", "flux"] }
+      @schema = [{ type: "foo", fields: ["bar", "flux"] }]
       @model = { bar: "bar" }
     When -> @partitions = @helper.partition(@schema, @model)
     And ->
@@ -31,8 +32,7 @@ describe "Card Helpers", ->
 
   describe "aliased field", ->
     Given ->
-      @schema =
-        foo: { fields: "bar", component: "FOO" }
+      @schema = [{ type: "foo",  fields: "bar", component: "FOO" }]
       @model = { bar: "bar" }
     When -> @partitions = @helper.partition(@schema, @model)
     And ->
@@ -41,8 +41,7 @@ describe "Card Helpers", ->
 
   describe "with component", ->
     Given ->
-      @schema =
-        foo: { fields: { bar: "blah" } }
+      @schema = [{ type: "foo", fields: { bar: "blah" } }]
       @model = { bar: "bar" }
     When -> @partitions = @helper.partition(@schema, @model)
     And ->
@@ -53,7 +52,7 @@ describe "Card Helpers", ->
   describe "with component and handlers", ->
     Given ->
       @schema =
-        foo: { fields: { hix: "blah", qux: "" }, component: "FOO", handlers: "QUX" }
+        [{ type: "foo", fields: { hix: "blah", qux: "" }, component: "FOO", handlers: "QUX" }]
       @model = { bar: "bar", qux: "flux", foobar: "plox", hix: "bar" }
     When -> @partitions = @helper.partition(@schema, @model)
     And ->
